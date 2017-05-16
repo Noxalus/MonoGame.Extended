@@ -24,7 +24,6 @@ namespace Demo.Features
         private DemoBase _currentDemo;
 
         private GuiSystem _guiSystem;
-        private int _demoIndex = 0;
 
         public ViewportAdapter ViewportAdapter { get; private set; }
 
@@ -77,7 +76,7 @@ namespace Demo.Features
         {
             ViewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, 800, 480);
 
-            var skin = LoadSkin(@"Raw/adventure-gui-skin.json");
+            var skin = GuiSkin.FromFile(Content, @"Raw/adventure-gui-skin.json");
             var guiRenderer = new GuiSpriteBatchRenderer(GraphicsDevice, ViewportAdapter.GetScaleMatrix);
 
             _guiSystem = new GuiSystem(ViewportAdapter, guiRenderer)
@@ -94,14 +93,6 @@ namespace Demo.Features
             _currentDemo?.Unload();
             _currentDemo = _demos[name];
             _currentDemo.Load();
-        }
-
-        private GuiSkin LoadSkin(string assetName)
-        {
-            using (var stream = TitleContainer.OpenStream(assetName))
-            {
-                return GuiSkin.FromStream(stream, Content);
-            }
         }
 
         private KeyboardState _previousKeyboardState;
@@ -121,7 +112,7 @@ namespace Demo.Features
             base.Update(gameTime);
         }
 
-        private void Back()
+        public void Back()
         {
             if (_guiSystem.Screen.IsVisible)
                 Exit();

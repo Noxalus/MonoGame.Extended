@@ -27,6 +27,7 @@ namespace Demo.Features.Demos
         private Sprite _sprite;
         private Camera2D _camera;
         private ParticleEffect _particleEffect;
+        private Texture2D _particleTexture;
 
         protected override void LoadContent()
         {
@@ -41,10 +42,16 @@ namespace Demo.Features.Demos
                 Position = viewportAdapter.Center.ToVector2()
             };
 
-            var particleTexture = new Texture2D(GraphicsDevice, 1, 1);
-            particleTexture.SetData(new[] {Color.White});
+            _particleTexture = new Texture2D(GraphicsDevice, 1, 1);
+            _particleTexture.SetData(new[] {Color.White});
 
-            ParticleInit(new TextureRegion2D(particleTexture));
+            ParticleInit(new TextureRegion2D(_particleTexture));
+        }
+
+        protected override void UnloadContent()
+        {
+            // any content not loaded with the content manager should be disposed
+            _particleTexture.Dispose();
         }
 
         protected override void Update(GameTime gameTime)
@@ -105,8 +112,8 @@ namespace Demo.Features.Demos
                                 {
                                     new ColorInterpolator
                                     {
-                                        InitialColor = new HslColor(0.33f, 0.5f, 0.5f),
-                                        FinalColor = new HslColor(0.5f, 0.9f, 1.0f)
+                                        StartValue = new HslColor(0.33f, 0.5f, 0.5f),
+                                        EndValue = new HslColor(0.5f, 0.9f, 1.0f)
                                     }
                                 }
                             },

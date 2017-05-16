@@ -51,7 +51,15 @@ namespace MonoGame.Extended.Gui
             return _styles[name];
         }
 
-        public static GuiSkin FromStream(Stream stream, ContentManager contentManager)
+        public static GuiSkin FromFile(ContentManager contentManager, string path)
+        {
+            using (var stream = TitleContainer.OpenStream(path))
+            {
+                return FromStream(contentManager, stream);
+            }
+        }
+
+        public static GuiSkin FromStream(ContentManager contentManager, Stream stream)
         {
             var skinSerializer = new GuiJsonSerializer(contentManager);
 
@@ -92,7 +100,10 @@ namespace MonoGame.Extended.Gui
         public GuiControl Create(Type type, string template)
         {
             var control = (GuiControl)Activator.CreateInstance(type);
-            GetStyle(template).Apply(control);
+
+            if (template != null)
+                GetStyle(template).Apply(control);
+
             return control;
         }
     }
