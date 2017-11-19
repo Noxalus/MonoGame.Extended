@@ -47,6 +47,11 @@ namespace MonoGame.Extended.Particles
             GC.SuppressFinalize(this);
         }
 
+        public void Clear()
+        {
+            Buffer.Reclaim(ActiveParticles);
+        }
+
         private void ReclaimExpiredParticles()
         {
             var iterator = Buffer.Iterator;

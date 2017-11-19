@@ -49,6 +49,12 @@ namespace MonoGame.Extended.Particles
             }
         }
 
+        public void Clear()
+        {
+            foreach (var e in Emitters)
+                e.Clear();
+        }
+
         public void Update(float elapsedSeconds)
         {
             foreach (var e in Emitters)
